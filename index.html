@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game - بازی حدس عدد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./dist/output.css">
+    <!-- <link rel="icon" type="image/x-icon" href="./assets/favicon.ico"> -->
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-estedad">
+    
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden">
+        <div id="sidebar" class="sidebar">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold" data-en="Menu" data-fa="منو">منو</h2>
+                    <button id="closeSidebar" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus-ring">
+                        <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card-content space-y-4">
+                <a href="#" id="sidebarBackBtn" class="btn-ghost w-full justify-start">
+                    <i class="fas fa-arrow-right text-gray-600 dark:text-gray-300"></i>
+                    <span data-en="Portfolio" data-fa="پورتفولیو">پورتفولیو</span>
+                </a>
+                
+                <button id="sidebarLangToggle" class="btn-ghost w-full justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-globe text-gray-600 dark:text-gray-300"></i>
+                        <span data-en="Language" data-fa="زبان">زبان</span>
+                    </div>
+                    <span id="sidebarLangText" class="text-sm text-gray-500 dark:text-gray-400">EN</span>
+                </button>
+                
+                <button id="sidebarThemeToggle" class="btn-ghost w-full justify-start">
+                    <i class="fas fa-sun dark:hidden text-gray-600"></i>
+                    <i class="fas fa-moon hidden dark:block text-gray-300"></i>
+                    <span class="dark:hidden" data-en="Dark Mode" data-fa="حالت تاریک">حالت تاریک</span>
+                    <span class="hidden dark:block" data-en="Light Mode" data-fa="حالت روشن">حالت روشن</span>
+                </button>
+                
+                <button id="sidebarHelpBtn" class="btn-primary w-full justify-start">
+                    <i class="fas fa-question-circle"></i>
+                    <span data-en="Help" data-fa="راهنما">راهنما</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="flex flex-col">
+        
+        <!-- Header -->
+        <header class="flex-shrink-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <a href="#" id="backBtn" class="btn-ghost">
+                        <i class="fas fa-arrow-right text-gray-600 dark:text-gray-300"></i>
+                        <span data-en="Portfolio" data-fa="پورتفولیو">پورتفولیو</span>
+                    </a>
+                </div>
+
+                <!-- Logo/Title -->
+                <div class="flex-1 lg:flex-none text-center lg:text-right">
+                    <h1 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white" data-en="Number Guessing Game" data-fa="بازی حدس عدد">
+                        بازی حدس عدد
+                    </h1>
+                </div>
+
+                <!-- Desktop Controls -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <button id="langToggle" class="btn-ghost">
+                        <i class="fas fa-globe text-gray-600 dark:text-gray-300"></i>
+                        <span id="langText" class="text-gray-700 dark:text-gray-200">EN</span>
+                    </button>
+                    
+                    <button id="themeToggle" class="btn-ghost">
+                        <i class="fas fa-sun dark:hidden! text-gray-600"></i>
+                        <i class="fas fa-moon hidden! dark:block! text-gray-300"></i>
+                        <span class="text-gray-700 dark:text-gray-200 dark:hidden" data-en="Dark" data-fa="تاریک">تاریک</span>
+                        <span class="text-gray-200 hidden dark:block" data-en="Light" data-fa="روشن">روشن</span>
+                    </button>
+                    
+                    <button id="helpBtn" class="btn-primary">
+                        <i class="fas fa-question-circle text-white"></i>
+                        <span class="text-white" data-en="Help" data-fa="راهنما">راهنما</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="menuBtn" class="lg:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors focus-ring">
+                    <i class="fas fa-bars text-gray-600 dark:text-gray-300"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <div class="max-w-7xl mx-auto p-4 lg:p-6">
+                
+                <!-- Game Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+                    
+                    <!-- Stats Panel -->
+                    <div class="lg:col-span-1 order-2 lg:order-1">
+                        <div class="text-center mb-4 bg-gray-50 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-xl p-8">
+                            <h1 class="text-4xl md:text-5xl font-black text-gray-300 mb-4" data-en="Number Guessing Game" data-fa="بازی حدس عدد">بازی حدس عدد</h1>
+                            <p class="text-md text-gray-400 font-medium" data-en="Test your intuition and logic" data-fa="شهود و منطق خود را آزمایش کنید">شهود و منطق خود را آزمایش کنید</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-content">
+                                <h2 class="text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6 flex items-center gap-3">
+                                    <div class="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center">
+                                        <i class="fas fa-chart-bar text-white text-xs"></i>
+                                    </div>
+                                    <span data-en="Stats" data-fa="آمار">آمار</span>
+                                </h2>
+
+                                <div class="space-y-3 lg:space-y-4">
+                                    <div class="flex justify-between items-center py-2 lg:py-3 border-b border-gray-200 dark:border-gray-700">
+                                        <span class="text-gray-600 dark:text-gray-400 text-sm lg:text-base" data-en="Score" data-fa="امتیاز">امتیاز</span>
+                                        <span class="text-xl lg:text-2xl font-bold text-blue-600 dark:text-blue-400" id="score">20</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center py-2 lg:py-3 border-b border-gray-200 dark:border-gray-700">
+                                        <span class="text-gray-600 dark:text-gray-400 text-sm lg:text-base" data-en="Best" data-fa="بهترین">بهترین</span>
+                                        <span class="text-xl lg:text-2xl font-bold text-green-600 dark:text-green-400" id="highScore">0</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center py-2 lg:py-3">
+                                        <span class="text-gray-600 dark:text-gray-400 text-sm lg:text-base" data-en="Attempts" data-fa="تلاش">تلاش</span>
+                                        <span class="text-xl lg:text-2xl font-bold text-gray-700 dark:text-gray-300" id="attempts">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Panel -->
+                    <div class="lg:col-span-3 order-1 lg:order-2">
+                        <div class="card">
+                            <div class="card-content flex flex-col">
+                                
+                                <!-- Mystery Number -->
+                                <div class="text-center mb-6 lg:mb-8">
+                                    <div class="relative inline-block">
+                                        <div class="w-24 h-24 lg:w-32 lg:h-32 bg-gray-100 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-full flex items-center justify-center mx-auto mb-3 lg:mb-4 hover:border-blue-500 dark:hover:border-blue-400 transition-colors duration-300">
+                                            <span class="text-3xl lg:text-5xl font-black text-blue-600 dark:text-blue-400" id="mysteryNumber">?</span>
+                                        </div>
+                                        <div class="inline-block bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full px-3 lg:px-4 py-1 lg:py-2">
+                                            <span class="text-gray-600 dark:text-gray-400 text-xs lg:text-sm" data-en="1 to 20" data-fa="۱ تا ۲۰">۱ تا ۲۰</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Input Section -->
+                                <div class="mb-6 lg:mb-8">
+                                    <div class="max-w-md mx-auto">
+                                        <div class="flex gap-2 lg:gap-3">
+                                            <input 
+                                                type="number" 
+                                                id="guessInput"
+                                                class="input-primary flex-1 text-center font-semibold text-base lg:text-lg focus-ring"
+                                                placeholder="۱ تا ۲۰"
+                                                min="1" 
+                                                max="20"
+                                            >
+                                            
+                                            <button id="checkBtn" class="btn-primary disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed text-sm lg:text-base focus-ring">
+                                                <i class="fas fa-search"></i>
+                                                <span class="hidden sm:inline" data-en="Check" data-fa="بررسی">بررسی</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Message Section -->
+                                <div class="flex-1 mb-4 lg:mb-6">
+                                    <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-3 lg:p-4 text-center flex items-center justify-center" id="messageBox">
+                                        <div class="flex items-center justify-center gap-3">
+                                            <i class="fas fa-play-circle text-blue-600 dark:text-blue-400"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 font-medium text-sm lg:text-base" id="gameMessage" data-en="Ready to start?" data-fa="آماده شروع؟">آماده شروع؟</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Button -->
+                                <div class="text-center">
+                                    <button id="resetBtn" class="btn-secondary mx-auto text-sm lg:text-base focus-ring">
+                                        <i class="fas fa-redo"></i>
+                                        <span data-en="New Game" data-fa="بازی جدید">بازی جدید</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="modalOverlay" class="modal-overlay scrollbar-thin">
+        <div class="card max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            
+            <!-- Modal Header -->
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-lightbulb text-white text-sm"></i>
+                        </div>
+                        <span data-en="How to Play" data-fa="نحوه بازی">نحوه بازی</span>
+                    </h2>
+                    <button id="closeModal" class="w-8 h-8 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors duration-200 focus-ring">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="card-content space-y-4 lg:space-y-6">
+                <div class="grid gap-4 lg:gap-6">
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-target text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2" data-en="Objective" data-fa="هدف">هدف</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm" data-en="Find the secret number between 1 and 20" data-fa="عدد مخفی بین ۱ تا ۲۰ را پیدا کنید">عدد مخفی بین ۱ تا ۲۰ را پیدا کنید</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-star text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2" data-en="Scoring" data-fa="امتیازدهی">امتیازدهی</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm" data-en="Start with 20 points, lose 1 for each wrong guess" data-fa="با ۲۰ امتیاز شروع کنید، با هر حدس غلط ۱ امتیاز کم می‌شود">با ۲۰ امتیاز شروع کنید، با هر حدس غلط ۱ امتیاز کم می‌شود</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-lightbulb text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2" data-en="Hints" data-fa="راهنمایی">راهنمایی</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm" data-en="Get feedback if your guess is too high or low" data-fa="بازخورد دریافت کنید که حدس شما زیاد یا کم است">بازخورد دریافت کنید که حدس شما زیاد یا کم است</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="card-header border-t border-gray-200 dark:border-gray-700 text-center">
+                <button id="startBtn" class="btn-primary mx-auto focus-ring">
+                    <i class="fas fa-play"></i>
+                    <span data-en="Start Playing" data-fa="شروع بازی">شروع بازی</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+</body>
+</html>
