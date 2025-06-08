@@ -52,35 +52,45 @@ function disableGuessing() {
     checkBtn.disabled = true;
 }
 
-function decreaseScore(){
+function decreaseScore() {
     scoreNumber--;
     score.textContent = scoreNumber;
 }
 
-function handleWin(){
+function handleWin() {
     showMessage(messageBox, 'عالی بود، درست حدس زدی 🏆', 'success');
     shakeElement(messageBox);
     disableGuessing();
     resetBtn.focus();
 }
 
-function handleWrongGuess(guess){
-    if(guess > highestNumberLimit || guess < 1){
-        showMessage(messageBox, 'عدد وارد شده خارج از محدوده است', 'error');
+function handleWrongGuess(guess) {
+    if (scoreNumber > 1) {
+        // if user input is empty
+        if (!guess) {
+            showMessage(messageBox, 'لطفا عددی وارد کنید ⛔', 'error');
+            shakeElement(messageBox);
+            resetGuessInput();
+            decreaseScore();
+        }
+        if (guess > secretNumber) {
+            showMessage(messageBox, 'خیلی زیاده، عدد کمتری امتحان کن ⬇', 'warning');
+            shakeElement(messageBox);
+            resetGuessInput();
+            decreaseScore();
+        }
+        if (guess < secretNumber && guess > 0) {
+            showMessage(messageBox, 'خیلی کمه، عدد بیشتری امتحان کن ⬆', 'warning');
+            shakeElement(messageBox);
+            resetGuessInput();
+            decreaseScore();
+        }
+    } else {
+        showMessage(messageBox, 'باختی!', 'error');
         shakeElement(messageBox);
-        resetGuessInput();
-    }
-    if (guess > secretNumber){
-        showMessage(messageBox, 'خیلی زیاده، عدد کمتری امتحان کن ⬇', 'warning');
-        shakeElement(messageBox);
-        resetGuessInput();
+        disableGuessing();
         decreaseScore();
-    }
-    else if( guess < secretNumber){
-        showMessage(messageBox, 'خیلی کمه، عدد بیشتری امتحان کن ⬆', 'warning');
-        shakeElement(messageBox);
-        resetGuessInput();
-        decreaseScore();
+        resetBtn.focus();
     }
 }
 
@@ -91,7 +101,7 @@ function checkGuess() {
         handleWin();
     }
     else {
-    handleWrongGuess(guessNumber);
+        handleWrongGuess(guessNumber);
     }
 }
 
