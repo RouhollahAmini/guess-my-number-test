@@ -13,12 +13,20 @@ Object.assign(window, {
 });
 
 const highestNumberLimit = 20;
-const secretNumber = Math.floor(Math.random() * highestNumberLimit) + 1;
+let secretNumber;
 let scoreNumber = 20;
 let highScore = 0;
-let attempts = 0;
+let attemptsNumber = 0;
 
-console.log(secretNumber);
+// فانکشن برای تولید عدد تصادفی جدید
+function generateNewSecretNumber() {
+    secretNumber = Math.floor(Math.random() * highestNumberLimit) + 1;
+    console.log('New secret number:', secretNumber);
+    return secretNumber;
+}
+
+// شروع بازی با عدد تصادفی
+generateNewSecretNumber();
 
 function shakeElement(element) {
     element.classList.add('animate-shake');
@@ -52,14 +60,25 @@ function disableGuessing() {
     checkBtn.disabled = true;
 }
 
+function enableGuessing() {
+    guessInput.disabled = false;
+    checkBtn.disabled = false;
+}
+
 function decreaseScore() {
     scoreNumber--;
     score.textContent = scoreNumber;
 }
 
+function increaseAttempts() {
+    attemptsNumber++;
+    attempts.textContent = attemptsNumber;
+}
+
 function handleWin() {
     showMessage(messageBox, 'عالی بود، درست حدس زدی 🏆', 'success');
     shakeElement(messageBox);
+    mysteryNumber.textContent = secretNumber;
     disableGuessing();
     resetBtn.focus();
 }
@@ -78,12 +97,14 @@ function handleWrongGuess(guess) {
             shakeElement(messageBox);
             resetGuessInput();
             decreaseScore();
+            increaseAttempts();
         }
         if (guess < secretNumber && guess > 0) {
             showMessage(messageBox, 'خیلی کمه، عدد بیشتری امتحان کن ⬆', 'warning');
             shakeElement(messageBox);
             resetGuessInput();
             decreaseScore();
+            increaseAttempts();
         }
     } else {
         showMessage(messageBox, 'باختی!', 'error');
@@ -93,6 +114,30 @@ function handleWrongGuess(guess) {
         resetBtn.focus();
     }
 }
+
+["click", "keypress"].forEach(event =>
+    resetBtn.addEventListener(event, resetGame)
+);
+
+function resetGame() {
+    // تولید عدد تصادفی جدید
+    generateNewSecretNumber();
+    resetGuessInput();
+
+    mysteryNumber.textContent = '?';
+
+
+    scoreNumber = 20;
+    score.textContent = scoreNumber;
+    attemptsNumber = 0;
+    attempts.textContent = attemptsNumber;
+    showMessage(messageBox, 'بازی را از ابتدا شروع کنید', 'error');
+    shakeElement(messageBox);
+    enableGuessing();
+    guessInput.focus();
+
+
+};
 
 function checkGuess() {
     let guessNumber = Number(guessInput.value);
