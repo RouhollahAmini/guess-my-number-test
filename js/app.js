@@ -82,7 +82,7 @@ function handleWin() {
     disableGuessing();
     resetBtn.focus();
 
-    if(highScoreNumber < scoreNumber){
+    if (highScoreNumber < scoreNumber) {
         highScoreNumber = scoreNumber;
         highScore.textContent = highScoreNumber;
     }
@@ -90,34 +90,16 @@ function handleWin() {
 
 function handleWrongGuess(guess) {
     if (scoreNumber > 1) {
-        // if user input is empty
-        if (!guess) {
-            showMessage(messageBox, 'لطفا عددی وارد کنید ⛔', 'error');
-            shakeElement(messageBox);
-            resetGuessInput();
-            decreaseScore();
-        }
-        if (guess > secretNumber) {
-            showMessage(messageBox, 'خیلی زیاده، عدد کمتری امتحان کن ⬇', 'warning');
-            shakeElement(messageBox);
-            resetGuessInput();
-            decreaseScore();
-            increaseAttempts();
-        }
-        if (guess < secretNumber && guess > 0) {
-            showMessage(messageBox, 'خیلی کمه، عدد بیشتری امتحان کن ⬆', 'warning');
-            shakeElement(messageBox);
-            resetGuessInput();
-            decreaseScore();
-            increaseAttempts();
-        }
+        showMessage(messageBox, guess > secretNumber ? 'خیلی زیاده، عدد کمتری امتحان کن ⬇' : 'خیلی کمه، عدد بیشتری امتحان کن ⬆', 'warning');
     } else {
         showMessage(messageBox, 'باختی!', 'error');
-        shakeElement(messageBox);
         disableGuessing();
-        decreaseScore();
         resetBtn.focus();
     }
+    shakeElement(messageBox);
+    resetGuessInput();
+    decreaseScore();
+    increaseAttempts();
 }
 
 ["click", "keypress"].forEach(event =>
@@ -145,7 +127,12 @@ function resetGame() {
 function checkGuess() {
     let guessNumber = Number(guessInput.value);
     console.log(guessNumber, 'how are you');
-    if (guessNumber === secretNumber) {
+    // if user input is empty
+    if (!guessNumber) {
+        showMessage(messageBox, 'لطفا عددی وارد کنید ⛔', 'error');
+        shakeElement(messageBox);
+    }
+    else if (guessNumber === secretNumber) {
         handleWin();
     }
     else {
