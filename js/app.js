@@ -15,7 +15,7 @@ Object.assign(window, {
 const highestNumberLimit = 20;
 let secretNumber;
 let scoreNumber = 20;
-let highScore = 0;
+let highScoreNumber = 0;
 let attemptsNumber = 0;
 
 // فانکشن برای تولید عدد تصادفی جدید
@@ -81,6 +81,11 @@ function handleWin() {
     mysteryNumber.textContent = secretNumber;
     disableGuessing();
     resetBtn.focus();
+
+    if(highScoreNumber < scoreNumber){
+        highScoreNumber = scoreNumber;
+        highScore.textContent = highScoreNumber;
+    }
 }
 
 function handleWrongGuess(guess) {
@@ -126,7 +131,6 @@ function resetGame() {
 
     mysteryNumber.textContent = '?';
 
-
     scoreNumber = 20;
     score.textContent = scoreNumber;
     attemptsNumber = 0;
@@ -135,7 +139,6 @@ function resetGame() {
     shakeElement(messageBox);
     enableGuessing();
     guessInput.focus();
-
 
 };
 
